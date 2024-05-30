@@ -1,22 +1,23 @@
 import './App.css';
 import Sidebar from './components/common/Sidebar';
-import { Route, BrowserRouter as Router,Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Dashboard from './components/pages/Dashboard';
 import PostJob from './components/pages/PostJob';
+import Navbar from './components/common/Navbar';
 
 
 function App() {
   return (
     <>
-       <Router>
-      <Sidebar />
-   
+      <Router>
+        <Navbar />
+        <Sidebar />
         <Routes>
-          <Route path="/dashboard" element={<Dashboard/>}/>
-          <Route path="/postjob" element={<PostJob/>}/>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/postjob" element={<PostJob />} />
         </Routes>
       </Router>
-      
+
     </>
   );
 }
