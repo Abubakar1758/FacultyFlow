@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
+import { GlobalStateContext } from '../../contexts/GlobalStateContext';
+import { useNavigate } from 'react-router-dom';
 export default function Landing() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeNavItem, setActiveNavItem] = useState(null);
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false); // State for modal visibility
+    const {updateLoggedInStatus} = useContext(GlobalStateContext);
+    const navigate = useNavigate();
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -12,37 +17,51 @@ export default function Landing() {
         setActiveNavItem('Features');
     };
 
+    const openLoginModal = () => {
+        setIsLoginModalOpen(true);
+    };
+
+    const closeLoginModal = () => {
+        setIsLoginModalOpen(false);
+    };
+
+    const handleLogin =()=>{
+        updateLoggedInStatus(true);
+        navigate("/dashboard");
+    }
     return (
-        
+
         <>
-              <nav className="bg-gray-200 text-blue-900 py-4 sticky top-0 z-50">
-            <div className="container mx-auto flex justify-between items-center px-6">
-                <div className="text-lg font-bold">FacultyFlow</div>
-                <div className="md:hidden">
-                    <button onClick={toggleMenu} className="block text-lime-500 hover:text-lime-500 focus:text-lime-500 focus:outline-none">
-                        <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
-                            {isMenuOpen ? (
-                                <path fillRule="evenodd" clipRule="evenodd" d="M21 12c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2s.9 2 2 2h14c1.1 0 2-.9 2-2zm-2-7H5c-1.1 0-2 .9-2 2s.9 2 2 2h14c1.1 0 2-.9 2-2s-.9-2-2-2zm-2 14H5c-1.1 0-2 .9-2 2s.9 2 2 2h14c1.1 0 2-.9 2-2s-.9-2-2-2z"/>
-                            ) : (
-                                <path fillRule="evenodd" clipRule="evenodd" d="M3 6h18v2H3V6zm0 7h18v-2H3v2zm0 7h18v-2H3v2z"/>
-                            )}
-                        </svg>
-                    </button>
+            <nav className="bg-gray-200 text-blue-900 py-4 sticky top-0 z-50">
+                <div className="container mx-auto flex justify-between items-center px-6">
+                    <div className="text-lg font-bold">FacultyFlow</div>
+                    <div className="md:hidden">
+                        <button onClick={toggleMenu} className="block text-lime-500 hover:text-lime-500 focus:text-lime-500 focus:outline-none">
+                            <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                                {isMenuOpen ? (
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M21 12c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2s.9 2 2 2h14c1.1 0 2-.9 2-2zm-2-7H5c-1.1 0-2 .9-2 2s.9 2 2 2h14c1.1 0 2-.9 2-2s-.9-2-2-2zm-2 14H5c-1.1 0-2 .9-2 2s.9 2 2 2h14c1.1 0 2-.9 2-2s-.9-2-2-2z" />
+                                ) : (
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M3 6h18v2H3V6zm0 7h18v-2H3v2zm0 7h18v-2H3v2z" />
+                                )}
+                            </svg>
+                        </button>
+                    </div>
+                    <div className={`hidden md:block ${isMenuOpen ? 'block' : 'hidden'}`}>
+                        <a href="#" className={`mx-2 px-4 py-2 hover:text-white hover:bg-lime-500 transition duration-300 ease-in-out ${activeNavItem === 'Home' ? 'bg-blue-900 text-white' : ''}`} onClick={() => handleNavItemClick('Home')}>Home</a>
+                        <a href="#features" className={`mx-2 px-4 py-2 hover:text-white hover:bg-lime-500 transition duration-300 ease-in-out ${activeNavItem === 'Features' ? 'bg-blue-900 text-white' : ''}`} onClick={() => handleNavItemClick('Features')}>Features</a>
+                        <a href="#contact-us" className={`mx-2 px-4 py-2 hover:text-white hover:bg-lime-500 transition duration-300 ease-in-out ${activeNavItem === 'Contact Us' ? 'bg-blue-900 text-white' : ''}`} onClick={() => handleNavItemClick('Contact Us')}>Contact Us</a>
+                        <a className="ms-5 px-4 py-2 bg-lime-500 text-white hover:bg-lime-600 transition duration-300 ease-in-out rounded-full" onClick={openLoginModal}>Log In</a>
+                        <a href="#signup" className="ms-5 px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 transition duration-300 ease-in-out rounded-full">Sign Up</a>
+                    </div>
                 </div>
-                <div className={`hidden md:block ${isMenuOpen ? 'block' : 'hidden'}`}>
-                    <a href="#" className={`mx-2 px-4 py-2 hover:text-white hover:bg-lime-500 transition duration-300 ease-in-out ${activeNavItem === 'Home' ? 'bg-blue-900 text-white' : ''}`} onClick={() => handleNavItemClick('Home')}>Home</a>
-                    <a href="#features" className={`mx-2 px-4 py-2 hover:text-white hover:bg-lime-500 transition duration-300 ease-in-out ${activeNavItem === 'Features' ? 'bg-blue-900 text-white' : ''}`} onClick={() => handleNavItemClick('Features')}>Features</a>
-                    <a href="#contact-us" className={`mx-2 px-4 py-2 hover:text-white hover:bg-lime-500 transition duration-300 ease-in-out ${activeNavItem === 'Contact Us' ? 'bg-blue-900 text-white' : ''}`} onClick={() => handleNavItemClick('Contact Us')}>Contact Us</a>
-                    <a href="#" className="ms-5 px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 transition duration-300 ease-in-out rounded-full" onClick={() => handleNavItemClick('Sign Up')}>Sign Up</a>
+                <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`} style={{ position: 'absolute', top: '60px', right: '20px', backgroundColor: 'white', border: '1px solid #ccc', padding: '10px', borderRadius: '5px', zIndex: '10' }}>
+                    <a href="#" className="block px-4 py-2 text-sm hover:bg-lime-500 hover:text-white">Home</a>
+                    <a href="#features" className="block px-4 py-2 text-sm hover:bg-lime-500 hover:text-white">Features</a>
+                    <a href="#contact-us" className="block px-4 py-2 text-sm hover:bg-lime-500 hover:text-white">Contact Us</a>
+                    <a className="block px-4 py-2 text-sm bg-lime-500 text-white hover:bg-lime-600 transition duration-300 ease-in-out rounded-full" onClick={openLoginModal}>Log In</a>
+                    <a href="#signup" className="block mt-3 px-4 py-2 text-sm bg-blue-500 text-white hover:bg-blue-600 transition duration-300 ease-in-out rounded-full">Sign Up</a>
                 </div>
-            </div>
-            <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`} style={{ position: 'absolute', top: '60px', right: '20px', backgroundColor: 'white', border: '1px solid #ccc', padding: '10px', borderRadius: '5px', zIndex: '10' }}>
-                <a href="#" className="block px-4 py-2 text-sm hover:bg-lime-500 hover:text-white">Home</a>
-                <a href="#features" className="block px-4 py-2 text-sm hover:bg-lime-500 hover:text-white">Features</a>
-                <a href="#contact-us" className="block px-4 py-2 text-sm hover:bg-lime-500 hover:text-white">Contact Us</a>
-                <a href="#signup" className="block px-4 py-2 text-sm bg-blue-500 text-white hover:bg-blue-600 transition duration-300 ease-in-out rounded-full">Sign Up</a>
-            </div>
-        </nav>
+            </nav>
 
             {/* <!-- Hero Section --> */}
             <header className="relative bg-cover bg-center py-20" style={{ backgroundImage: "url('/pictures/fast.jpeg')" }}>
@@ -188,7 +207,6 @@ export default function Landing() {
                                 <button type="submit" class="w-full mt-4 px-6 py-3 bg-lime-500 text-white font-semibold rounded-lg shadow-md hover:bg-lime-600 transition duration-300">Submit</button>
                             </form>
                         </div>
-
                     </div>
                 </div>
             </section>
@@ -197,13 +215,54 @@ export default function Landing() {
 
 
             {/* <!-- Call to Action Section --> */}
-            <section id="signup" class="py-16 bg-gray-800 text-white">
-                <div class="container mx-auto px-6 text-center">
-                    <h2 class="text-3xl font-bold">Get Started with FacultyFlow</h2>
-                    <p class="mt-4 text-lg">Join us today and streamline your hiring process.</p>
-                    <a href="/signup" class="mt-6 inline-block px-6 py-3 bg-lime-500 text-white font-semibold rounded-lg shadow-md hover:bg-lime-600 transition duration-300">Sign Up Now</a>
+            <section id="signup" className="py-16 bg-gray-800 text-white">
+                <div className="container mx-auto px-6 text-center">
+                    <h2 className="text-3xl font-bold">Get Started with FacultyFlow</h2>
+                    <p className="mt-4 text-lg">Join us today and streamline your hiring process.</p>
+                    <form className="mt-8 max-w-md mx-auto">
+                        <div className="flex flex-col space-y-4">
+                            <input type="text" placeholder="Full Name" className="w-full px-4 py-3 text-gray-900 rounded-lg border border-gray-400 focus:outline-none focus:border-lime-500" />
+                            <input type="email" placeholder="Email Address" className="w-full px-4 py-3 text-gray-900 rounded-lg border border-gray-400 focus:outline-none focus:border-lime-500" />
+                            <input type="password" placeholder="Password" className="w-full px-4 py-3 text-gray-900 rounded-lg border border-gray-400 focus:outline-none focus:border-lime-500" />
+                            <input type="password" placeholder="Confirm Password" className="w-full px-4 py-3 text-gray-900 rounded-lg border border-gray-400 focus:outline-none focus:border-lime-500" />
+                            <button type="submit" className="w-full px-6 py-3 bg-lime-500 text-white font-semibold  rounded-lg shadow-md hover:bg-lime-600 transition duration-300">Sign Up</button>
+                        </div>
+                    </form>
+                    <p onClick={openLoginModal} className="mt-4 text-sm text-gray-400">Already have an account? <span className="text-lime-500 hover:underline">Log in</span></p>
                 </div>
             </section>
+
+
+            {/* Login Modal */}
+            {isLoginModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="bg-white p-8 rounded-lg shadow-md w-96 relative">
+                        <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-800" onClick={closeLoginModal}>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                        <h2 className="text-2xl text-center font-bold mb-4">Login</h2>
+                        {/* Login form */}
+                        <form onSubmit={handleLogin}>
+                            {/* Form fields */}
+                            <div className="mb-4">
+                                <label htmlFor="email" className="block text-gray-700 font-semibold mb-1">Email Address</label>
+                                <input type="email" id="email" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-lime-500" required />
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="password" className="block text-gray-700 font-semibold mb-1">Password</label>
+                                <input type="password" id="password" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-lime-500" required />
+                            </div>
+                            <div className="flex justify-between items-center mb-4">
+                                <a href="#" className="text-sm text-blue-500 hover:text-blue-600">Forgot Password?</a>
+                            </div>
+                            <button type="submit" className="w-full bg-lime-500 text-white font-semibold py-2 rounded-lg hover:bg-lime-600 transition duration-300">Login</button>
+                        </form>
+                    </div>
+                </div>
+            )}
+
 
 
 
